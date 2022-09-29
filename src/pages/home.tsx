@@ -9,10 +9,10 @@ export const Home = () => {
   const [input2, setInput2] = useState("");
   const [input3, setInput3] = useState("");
 
-  const [vt, setVt] = useState("0,00");
-  const [v15, setV15] = useState("0,00");
-  const [v30, setV30] = useState("0,00");
-  const [v90, setV90] = useState("0,00");
+  const [vt, setVt] = useState(0.0);
+  const [v15, setV15] = useState(0.0);
+  const [v30, setV30] = useState(0.0);
+  const [v90, setV90] = useState(0.0);
 
   const submit = () => {
     const data = {
@@ -95,29 +95,32 @@ export const Home = () => {
           gap={4}
           fontSize={["md", "sm", "lg"]}
         >
-          <Text as="b">VOCÊ RECEBERÁ:</Text>
+          <Box>
+            <Text as="b">VOCÊ RECEBERÁ:</Text>
+            <Box w="120%" border={`1px solid #76A0CF`}></Box>
+          </Box>
           <Text>
             Amanhã:{" "}
             <Text as="b" color="blueSecondary">
-              R$ {vt}
+              R$ {Number(vt).toFixed(2).replace(".", ",")}
             </Text>
           </Text>
           <Text>
             Em 15 dias:{" "}
             <Text as="b" color="blueSecondary">
-              R$ {v15}
+              R$ {Number(v15).toFixed(2).replace(".", ",")}
             </Text>
           </Text>
           <Text>
             Em 30 dias:{" "}
             <Text as="b" color="blueSecondary">
-              R$ {v30}
+              R$ {Number(v30).toFixed(2).replace(".", ",")}
             </Text>
           </Text>
           <Text>
             Em 90 dias:{" "}
             <Text as="b" color="blueSecondary">
-              R$ {v90}
+              R$ {Number(v90).toFixed(2).replace(".", ",")}
             </Text>
           </Text>
         </Box>
