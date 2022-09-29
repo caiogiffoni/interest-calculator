@@ -43,22 +43,24 @@ export const Home = () => {
     >
       <Box
         backgroundColor="#ffffff"
-        w="800px"
-        h="400px"
+        w={["255px", "450px", "700px", "800px"]}
+        h={["600px", "400px"]}
         display="flex"
+        flexDirection={["column", "row"]}
         border="1px solid #b6b6b6"
         borderRadius="10px"
       >
         <Box
-          w="65%"
+          w={["100%", "60%", "65%"]}
+          h={["62%", "100%"]}
           display="flex"
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
           gap={8}
-          padding="0px 100px"
+          padding={["0px 25px", "0px 30px", "0px 80px", "0px 100px"]}
         >
-          <Text fontSize="2xl" as="b" color="#817d7d">
+          <Text fontSize={["md", "md", "xl", "2xl"]} as="b" color="#817d7d">
             Simule a sua Antecipação
           </Text>
           <Input
@@ -77,11 +79,12 @@ export const Home = () => {
             onChange={(e) => setInput3(e.target.value)}
           />
           <Button colorScheme="blue" onClick={() => submit()}>
-            Enviar (retirar depois)
+            Enviar (retirar)
           </Button>
         </Box>
         <Box
-          w="35%"
+          w={["100%", "40%", "35%"]}
+          h={["38%", "100%"]}
           backgroundColor="#F7F9FA"
           borderRightRadius="10px"
           color="bluePrimary"
@@ -90,7 +93,7 @@ export const Home = () => {
           alignItems="center"
           flexDirection="column"
           gap={4}
-          padding="0px 0px"
+          fontSize={["md", "sm", "lg"]}
         >
           <Text as="b">VOCÊ RECEBERÁ:</Text>
           <Text>
