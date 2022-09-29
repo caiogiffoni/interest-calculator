@@ -1,25 +1,46 @@
 import { Box, Input, Text } from "@chakra-ui/react";
-import { Button, ButtonGroup } from "@chakra-ui/react";
-import { addPointerEvent } from "framer-motion";
-import { useState } from "react";
+import { Button } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import api from "../services";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+
+interface IPost {
+  amount: string;
+  installments: string;
+  mdr: string;
+}
 
 export const Home = () => {
-  const [input1, setInput1] = useState("");
-  const [input2, setInput2] = useState("");
-  const [input3, setInput3] = useState("");
-
   const [vt, setVt] = useState(0.0);
   const [v15, setV15] = useState(0.0);
   const [v30, setV30] = useState(0.0);
   const [v90, setV90] = useState(0.0);
 
-  const submit = () => {
-    const data = {
-      amount: input1,
-      installments: input2,
-      mdr: input3,
-    };
+  const schema = yup.object().shape({
+    amount: yup.string().required("Campo obrigatório"),
+    installments: yup.string().required("Campo obrigatório"),
+    mdr: yup.string().required("Campo obrigatório"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm<IPost>({
+    resolver: yupResolver(schema),
+  });
+
+  // const amountValue = watch("amount");
+
+  // useEffect(() => {
+  //   setInput1("amount", normalizeamount(input1));
+  // }, [input1]);
+
+  const onSubmitFunction = (data: IPost) => {
     api
       .post("", data)
       .then((res) => {
@@ -65,20 +86,17 @@ export const Home = () => {
           </Text>
           <Input
             placeholder="Infome o valor da venda"
-            value={input1}
-            onChange={(e) => setInput1(e.target.value)}
+            {...register("amount")}
           />
           <Input
             placeholder="Em quantas parcelas"
-            value={input2}
-            onChange={(e) => setInput2(e.target.value)}
+            {...register("installments")}
           />
           <Input
             placeholder="Informe o percentual de MDR"
-            value={input3}
-            onChange={(e) => setInput3(e.target.value)}
+            {...register("mdr")}
           />
-          <Button colorScheme="blue" onClick={() => submit()}>
+          <Button colorScheme="blue" onClick={handleSubmit(onSubmitFunction)}>
             Enviar (retirar)
           </Button>
         </Box>
