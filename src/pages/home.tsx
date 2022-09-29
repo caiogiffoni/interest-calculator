@@ -102,25 +102,37 @@ export const Home = () => {
           <Text>
             Amanhã:{" "}
             <Text as="b" color="blueSecondary">
-              R$ {Number(vt).toFixed(2).replace(".", ",")}
+              {vt.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
             </Text>
           </Text>
           <Text>
             Em 15 dias:{" "}
             <Text as="b" color="blueSecondary">
-              R$ {Number(v15).toFixed(2).replace(".", ",")}
+              {v15.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
             </Text>
           </Text>
           <Text>
             Em 30 dias:{" "}
             <Text as="b" color="blueSecondary">
-              R$ {Number(v30).toFixed(2).replace(".", ",")}
+              {v30.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
             </Text>
           </Text>
           <Text>
             Em 90 dias:{" "}
             <Text as="b" color="blueSecondary">
-              R$ {Number(v90).toFixed(2).replace(".", ",")}
+              {v90.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
             </Text>
           </Text>
         </Box>
