@@ -1,0 +1,8 @@
+yarn create vite . --template react-ts
+escolher framework e instalar
+
+yarn add react-hook-form
+yarn add yup
+yarn add @hookform/resolvers yup
+yarn add axios
+yarn add react-icons
