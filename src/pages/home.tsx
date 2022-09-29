@@ -1,16 +1,36 @@
 import { Box, Input, Text } from "@chakra-ui/react";
 import { Button, ButtonGroup } from "@chakra-ui/react";
+import { addPointerEvent } from "framer-motion";
 import { useState } from "react";
+import api from "../services";
 
 export const Home = () => {
   const [input1, setInput1] = useState("");
   const [input2, setInput2] = useState("");
   const [input3, setInput3] = useState("");
 
+  const [vt, setVt] = useState("0,00");
+  const [v15, setV15] = useState("0,00");
+  const [v30, setV30] = useState("0,00");
+  const [v90, setV90] = useState("0,00");
+
   const submit = () => {
-    console.log(input1);
-    console.log(input2);
-    console.log(input3);
+    const data = {
+      amount: input1,
+      installments: input2,
+      mdr: input3,
+    };
+    api
+      .post("", data)
+      .then((res) => {
+        setVt(res.data[1]);
+        setV15(res.data[15]);
+        setV30(res.data[30]);
+        setV90(res.data[90]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <Box
@@ -76,25 +96,25 @@ export const Home = () => {
           <Text>
             Amanhã:{" "}
             <Text as="b" color="blueSecondary">
-              R$ 0,00
+              R$ {vt}
             </Text>
           </Text>
           <Text>
             Em 15 dias:{" "}
             <Text as="b" color="blueSecondary">
-              R$ 0,00
+              R$ {v15}
             </Text>
           </Text>
           <Text>
             Em 30 dias:{" "}
             <Text as="b" color="blueSecondary">
-              R$ 0,00
+              R$ {v30}
             </Text>
           </Text>
           <Text>
             Em 90 dias:{" "}
             <Text as="b" color="blueSecondary">
-              R$ 0,00
+              R$ {v90}
             </Text>
           </Text>
         </Box>
