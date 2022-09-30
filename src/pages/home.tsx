@@ -5,6 +5,7 @@ import api from "../services";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { InputForm } from "../components/InputForm/Input";
 
 interface IPost {
   amount: string;
@@ -19,9 +20,26 @@ export const Home = () => {
   const [v90, setV90] = useState(0.0);
 
   const schema = yup.object().shape({
-    amount: yup.string().required("Campo obrigatório"),
-    installments: yup.string().required("Campo obrigatório"),
-    mdr: yup.string().required("Campo obrigatório"),
+    amount: yup
+      .number()
+      .integer("Valor deve ser um inteiro")
+      .moreThan(999, "Valor deve ser maior ou igual que R$1.000,00")
+      .required("Campo obrigatório")
+      .transform((value) => (isNaN(value) ? undefined : value)),
+
+    installments: yup
+      .number()
+      .lessThan(13, "Campo deve ser menor ou igual a 12")
+      .positive("Campo deve ser positivo")
+      .required("Campo obrigatório")
+      .transform((value) => (isNaN(value) ? undefined : value)),
+
+    mdr: yup
+      .number()
+      .lessThan(101, "Campo deve ser menor ou igual a 100")
+      .positive("Campo deve ser positivo")
+      .required("Campo obrigatório")
+      .transform((value) => (isNaN(value) ? undefined : value)),
   });
 
   const {
@@ -40,7 +58,13 @@ export const Home = () => {
   //   setInput1("amount", normalizeamount(input1));
   // }, [input1]);
 
+  const submit = () => {
+    console.log("atingii");
+
+    handleSubmit(onSubmitFunction);
+  };
   const onSubmitFunction = (data: IPost) => {
+    console.log("requisicao");
     api
       .post("", data)
       .then((res) => {
@@ -65,7 +89,7 @@ export const Home = () => {
       <Box
         backgroundColor="#ffffff"
         w={["255px", "450px", "700px", "800px"]}
-        h={["600px", "400px"]}
+        h={["600px", "500px"]}
         display="flex"
         flexDirection={["column", "row"]}
         border="1px solid #b6b6b6"
@@ -84,17 +108,37 @@ export const Home = () => {
           <Text fontSize={["md", "md", "xl", "2xl"]} as="b" color="#817d7d">
             Simule a sua Antecipação
           </Text>
-          <Input
-            placeholder="Infome o valor da venda"
-            {...register("amount")}
+          <InputForm
+            placeholder="Informe o valor de venda"
+            label="Informe o valor de venda"
+            error={errors.amount}
+            colorWordsDesc="green"
+            {...register("amount", {
+              onChange: handleSubmit(onSubmitFunction),
+            })}
           />
-          <Input
+
+          <InputForm
             placeholder="Em quantas parcelas"
-            {...register("installments")}
+            label="Número de parcelas"
+            error={errors.installments}
+            colorWordsDesc="green"
+            {...register("installments", {
+              onChange: handleSubmit(onSubmitFunction),
+            })}
+            onChange={handleSubmit(onSubmitFunction)}
           />
-          <Input
+
+          <InputForm
             placeholder="Informe o percentual de MDR"
-            {...register("mdr")}
+            label="Percentual de MDR"
+            error={errors.mdr}
+            // defaultValue={0}
+            colorWordsDesc="green"
+            {...register("mdr", {
+              onChange: handleSubmit(onSubmitFunction),
+            })}
+            onChange={handleSubmit(onSubmitFunction)}
           />
           <Button colorScheme="blue" onClick={handleSubmit(onSubmitFunction)}>
             Enviar (retirar)
