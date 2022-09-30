@@ -28,12 +28,22 @@ export const Home = () => {
         "moreThan999",
         "Valor deve ser maior ou igual que R$1.000,00",
         (value) => {
-          // if (undefined) {
-          //   return false;
-          // } else {
-          //   return true;
-          // }
-          return Number(value?.replace("R$", "").replace(",", ".")) > 999;
+          return (
+            Number(
+              value?.replace("R$", "").replaceAll(".", "").replace(",", ".")
+            ) > 999
+          );
+        }
+      )
+      .test(
+        "lessThan100000001",
+        "Valor deve ser menor ou igual que R$100.000.000,00",
+        (value) => {
+          return (
+            Number(
+              value?.replace("R$", "").replaceAll(".", "").replace(",", ".")
+            ) <= 100000000
+          );
         }
       ),
 
@@ -67,7 +77,6 @@ export const Home = () => {
     formState: { errors },
     watch,
     setValue,
-    getValues,
   } = useForm<IPost>({
     resolver: yupResolver(schema),
   });
@@ -86,7 +95,10 @@ export const Home = () => {
   const onSubmitFunction = async (data: IPost) => {
     data = {
       ...data,
-      amount: data.amount.replace("R$ ", "").replace(",", "."),
+      amount: data.amount
+        .replace("R$ ", "")
+        .replaceAll(".", "")
+        .replace(",", "."),
     };
     postApi(data);
   };
