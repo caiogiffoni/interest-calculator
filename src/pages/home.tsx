@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { InputForm } from "../components/InputForm/Input";
 import { normalizeAmount } from "../utils/masks";
+import { Statics } from "../components/statics/Statics";
 
 interface IPost {
   amount: string;
@@ -143,7 +144,7 @@ export const Home = () => {
             placeholder="Informe o valor de venda"
             label="Informe o valor de venda"
             error={errors.amount}
-            colorWordsDesc="green"
+            colorWordsDesc="blueSecondary"
             {...register("amount")}
           />
 
@@ -151,7 +152,7 @@ export const Home = () => {
             placeholder="Em quantas parcelas"
             label="Número de parcelas"
             error={errors.installments}
-            colorWordsDesc="green"
+            colorWordsDesc="blueSecondary"
             {...register("installments")}
           />
 
@@ -159,64 +160,11 @@ export const Home = () => {
             placeholder="Informe o percentual de MDR"
             label="Percentual de MDR"
             error={errors.mdr}
-            colorWordsDesc="green"
+            colorWordsDesc="blueSecondary"
             {...register("mdr")}
           />
         </Box>
-        <Box
-          w={["100%", "40%", "35%"]}
-          h={["38%", "100%"]}
-          backgroundColor="#F7F9FA"
-          borderRightRadius="10px"
-          color="bluePrimary"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-          gap={4}
-          fontSize={["md", "sm", "lg"]}
-        >
-          <Box>
-            <Text as="b">VOCÊ RECEBERÁ:</Text>
-            <Box w="120%" border={`1px solid #76A0CF`}></Box>
-          </Box>
-          <Text>
-            Amanhã:{" "}
-            <Text as="b" color="blueSecondary">
-              {vt.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              })}
-            </Text>
-          </Text>
-          <Text>
-            Em 15 dias:{" "}
-            <Text as="b" color="blueSecondary">
-              {v15.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              })}
-            </Text>
-          </Text>
-          <Text>
-            Em 30 dias:{" "}
-            <Text as="b" color="blueSecondary">
-              {v30.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              })}
-            </Text>
-          </Text>
-          <Text>
-            Em 90 dias:{" "}
-            <Text as="b" color="blueSecondary">
-              {v90.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              })}
-            </Text>
-          </Text>
-        </Box>
+        <Statics vt={vt} v15={vt} v30={v30} v90={v90} />
       </Box>
     </Box>
   );
