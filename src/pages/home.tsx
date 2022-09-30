@@ -47,15 +47,6 @@ export const Home = () => {
         }
       ),
 
-    // .integer("Valor deve ser um inteiro")
-    // .moreThan(999, "Valor deve ser maior ou igual que R$1.000,00")
-    // .required("Campo obrigatório"),
-    // .transform((value) =>
-    // /^R/.test(value)
-    //   ? value.replace("R$", "")
-    // isNaN(value) ? undefined : value
-    // ),
-
     installments: yup
       .number()
       .lessThan(13, "Campo deve ser menor ou igual a 12")
@@ -171,9 +162,6 @@ export const Home = () => {
             colorWordsDesc="green"
             {...register("mdr")}
           />
-          {/* <Button colorScheme="blue" onClick={handleSubmit(onSubmitFunction)}>
-            Enviar (retirar)
-          </Button> */}
         </Box>
         <Box
           w={["100%", "40%", "35%"]}
