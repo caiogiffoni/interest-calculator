@@ -29,12 +29,12 @@ import {
 //   mdr: string;
 // }
 
-interface InputProps extends ChakraInputProps {
-  name: string;
-  label?: string;
-  error?: FieldError | null;
-  colorWordsDesc: string;
-}
+// interface InputProps extends ChakraInputProps {
+//   name: string;
+//   label?: string;
+//   error?: FieldError | null;
+//   colorWordsDesc: string;
+// }
 
 // type inputVariationOptions = {
 //   [key: string]: string;
@@ -51,7 +51,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   { name, error = null, label, colorWordsDesc, ...rest },
   ref
 ) => {
-  // const [value, setValue] = useState<Number | String>(0);
+  // const [value, setValue] = useState("");
   // const [variation, setVariation] = useState("default");
 
   // useEffect(() => {
@@ -63,8 +63,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   // }, [error]);
 
   // const handleInputBlur = useCallback(() => {
-  //   if (value != 0 && !error) setVariation("filled");
-  //   console.log("mudou");
+  //   if (value.length > 1 && !error) setVariation("filled");
   // }, [error, value]);
 
   return (

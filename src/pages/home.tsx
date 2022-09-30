@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { InputForm } from "../components/InputForm/Input";
+import { normalizeAmount } from "../utils/masks";
 
 interface IPost {
   amount: string;
@@ -21,11 +22,29 @@ export const Home = () => {
 
   const schema = yup.object().shape({
     amount: yup
-      .number()
-      .integer("Valor deve ser um inteiro")
-      .moreThan(999, "Valor deve ser maior ou igual que R$1.000,00")
+      .string()
       .required("Campo obrigatório")
-      .transform((value) => (isNaN(value) ? undefined : value)),
+      .test(
+        "moreThan999",
+        "Valor deve ser maior ou igual que R$1.000,00",
+        (value) => {
+          // if (undefined) {
+          //   return false;
+          // } else {
+          //   return true;
+          // }
+          return Number(value?.replace("R$", "").replace(",", ".")) > 999;
+        }
+      ),
+
+    // .integer("Valor deve ser um inteiro")
+    // .moreThan(999, "Valor deve ser maior ou igual que R$1.000,00")
+    // .required("Campo obrigatório"),
+    // .transform((value) =>
+    // /^R/.test(value)
+    //   ? value.replace("R$", "")
+    // isNaN(value) ? undefined : value
+    // ),
 
     installments: yup
       .number()
@@ -48,26 +67,35 @@ export const Home = () => {
     formState: { errors },
     watch,
     setValue,
+    getValues,
   } = useForm<IPost>({
     resolver: yupResolver(schema),
   });
 
-  // const amountValue = watch("amount");
+  const amountValue = watch("amount");
+  const installmentsValue = watch("installments");
+  const mdrValue = watch("mdr");
 
-  // useEffect(() => {
-  //   setInput1("amount", normalizeamount(input1));
-  // }, [input1]);
+  useEffect(() => {
+    setValue("amount", normalizeAmount(amountValue));
+    if ([amountValue, installmentsValue, mdrValue].every((value) => !!value)) {
+      handleSubmit(onSubmitFunction)();
+    }
+  }, [amountValue, installmentsValue, mdrValue]);
 
-  const submit = () => {
-    console.log("atingii");
-
-    handleSubmit(onSubmitFunction);
+  const onSubmitFunction = async (data: IPost) => {
+    data = {
+      ...data,
+      amount: data.amount.replace("R$ ", "").replace(",", "."),
+    };
+    postApi(data);
   };
-  const onSubmitFunction = (data: IPost) => {
-    console.log("requisicao");
+
+  const postApi = (data: IPost) => {
     api
       .post("", data)
       .then((res) => {
+        console.log(res);
         setVt(res.data[1]);
         setV15(res.data[15]);
         setV30(res.data[30]);
@@ -113,9 +141,7 @@ export const Home = () => {
             label="Informe o valor de venda"
             error={errors.amount}
             colorWordsDesc="green"
-            {...register("amount", {
-              onChange: handleSubmit(onSubmitFunction),
-            })}
+            {...register("amount")}
           />
 
           <InputForm
@@ -123,26 +149,19 @@ export const Home = () => {
             label="Número de parcelas"
             error={errors.installments}
             colorWordsDesc="green"
-            {...register("installments", {
-              onChange: handleSubmit(onSubmitFunction),
-            })}
-            onChange={handleSubmit(onSubmitFunction)}
+            {...register("installments")}
           />
 
           <InputForm
             placeholder="Informe o percentual de MDR"
             label="Percentual de MDR"
             error={errors.mdr}
-            // defaultValue={0}
             colorWordsDesc="green"
-            {...register("mdr", {
-              onChange: handleSubmit(onSubmitFunction),
-            })}
-            onChange={handleSubmit(onSubmitFunction)}
+            {...register("mdr")}
           />
-          <Button colorScheme="blue" onClick={handleSubmit(onSubmitFunction)}>
+          {/* <Button colorScheme="blue" onClick={handleSubmit(onSubmitFunction)}>
             Enviar (retirar)
-          </Button>
+          </Button> */}
         </Box>
         <Box
           w={["100%", "40%", "35%"]}
