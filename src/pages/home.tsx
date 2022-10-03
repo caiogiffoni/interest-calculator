@@ -99,7 +99,6 @@ export const Home = () => {
     api
       .post("", data)
       .then((res) => {
-        console.log(res);
         setVt(res.data[1]);
         setV15(res.data[15]);
         setV30(res.data[30]);
